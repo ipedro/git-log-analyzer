@@ -24,7 +24,7 @@ struct GitLogAnalyzer: AsyncParsableCommand {
     @Option(
         help: .init(ReportOption.allCases.map(\.rawValue).joined(separator: ", ")),
         transform: ReportOption.init(stringLiteral:))
-    var report: ReportOption = .squadOwnership
+    var report: ReportOption = .json
 
     @Option(help: "Shows only commits before this date (inclusive). Accepts a variety of date formats like YY-MM-DD")
     var before: String?
@@ -99,7 +99,6 @@ struct GitLogAnalyzer: AsyncParsableCommand {
             for fileURL in fileURLs {
                 group.addTask {
                     let logs = try gitLog.follow(fileURL)
-                    print(logs.last)
                     return (fileURL, logs.reversed()) // oldest -> newest
                 }
             }

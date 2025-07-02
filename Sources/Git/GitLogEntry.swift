@@ -1,16 +1,15 @@
 import Foundation
 
 public struct GitLogEntry: Codable, Hashable, Sendable {
-    public var author: Contributor
-    public var body: String?
-    public var created: Date
-    public var hash: Hash
-    public var notes: String?
-    public var parent: String
-    public var published: Date
-    public var committer: Contributor
-    public var signature: Signature?
-    public var subject: Subject
+    public let author: Contributor
+    public let body: String
+    public let created: Date
+    public let hash: Hash
+    public let notes: String
+    public let parent: String
+    public let published: Date
+    public let committer: Contributor
+    public let subject: Subject
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -22,7 +21,6 @@ public struct GitLogEntry: Codable, Hashable, Sendable {
         try container.encode(self.parent, forKey: .parent)
         try container.encode(self.published, forKey: .published)
         try container.encode(self.committer, forKey: .committer)
-        try container.encode(self.signature, forKey: .signature)
         try container.encode(self.subject, forKey: .subject)
     }
 }
@@ -30,14 +28,6 @@ public struct GitLogEntry: Codable, Hashable, Sendable {
 public struct Subject: Codable, Hashable, CustomStringConvertible, Sendable {
     public let description: String
     public let sanitized: String
-}
-
-public struct Signature: Codable, Hashable, Sendable {
-    public let issuer: String
-    public let fingerprint: String
-    public let key: String
-    public let message: String
-    public let trustLevel: String
 }
 
 public struct Hash: Codable, Hashable, CustomStringConvertible, Sendable {
@@ -74,11 +64,6 @@ extension GitLogEntry: CustomStringConvertible {
         case published
         case committer
         case notes
-        case signatureFingerprint
-        case signatureKey
-        case signatureMessage
-        case signatureIssuer
-        case signatureTrustLevel
         case subjectSanitized
         
         var rawValue: String {
@@ -92,11 +77,6 @@ extension GitLogEntry: CustomStringConvertible {
             case .published: return "Published: "
             case .committer: return "Commit: "
             case .notes: return "Notes: "
-            case .signatureFingerprint: return "Signature Fingerprint: "
-            case .signatureKey: return "Signature Key: "
-            case .signatureMessage: return "Signature Message: "
-            case .signatureIssuer: return "Signature Issuer: "
-            case .signatureTrustLevel: return "Signature Trust Level: "
             case .subjectSanitized: return "Sanitized Subject: "
             }
         }
@@ -111,11 +91,8 @@ extension GitLogEntry: CustomStringConvertible {
     ) -> String {
         var strings = [String]()
         for key in keys {
-            if
-                let value = value(for: key, dateFormat: dateFormat),
-                !ommitEmptyValues ||
-                ommitEmptyValues && !isEmpty(value)
-            {
+            let value = value(for: key, dateFormat: dateFormat)
+            if !ommitEmptyValues || ommitEmptyValues && !isEmpty(value) {
                 strings.append("\(prefix)\(key.rawValue)\(value)")
             }
         }
@@ -129,7 +106,7 @@ extension GitLogEntry: CustomStringConvertible {
     private func value(
         for key: Key,
         dateFormat: Date.FormatStyle
-    ) -> String? {
+    ) -> String {
         switch key {
         case .author: return author.description
         case .body: return body
@@ -141,11 +118,6 @@ extension GitLogEntry: CustomStringConvertible {
         case .subjectSanitized: return subject.sanitized
         case .hashAbbreviated: return hash.abbreviated
         case .subject: return subject.description
-        case .signatureIssuer: return signature?.issuer
-        case .signatureFingerprint: return signature?.fingerprint
-        case .signatureKey: return signature?.key
-        case .signatureMessage: return signature?.message
-        case .signatureTrustLevel: return signature?.trustLevel
         }
     }
 

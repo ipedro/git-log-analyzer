@@ -22,7 +22,7 @@ public struct GitLog: Sendable {
     public func follow(_ url: URL) throws -> [GitLogEntry] {
         let output = try _follow(url)
         let rawEntries = try split(output)
-        let logEntries = try decoder.decode(rawEntries, stripEmptyProperties: true)
+        let logEntries = try decoder.decode(rawEntries)
         return logEntries.sorted()
     }
 

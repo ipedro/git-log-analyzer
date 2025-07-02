@@ -34,13 +34,6 @@ extension GitLogFormat {
   ⍺hash⍺: {
       ⍺description⍺: ⍺%H⍺,
       ⍺abbreviated⍺: ⍺%h⍺
-  },
-  ⍺signature⍺: {
-    ⍺issuer⍺: ⍺%GS⍺,
-    ⍺fingerprint⍺: ⍺%GF⍺,
-    ⍺key⍺: ⍺%GK⍺,
-    ⍺message⍺: ⍺%GG⍺,
-    ⍺trustLevel⍺: ⍺%GT⍺
   }
 }☑️
 """
