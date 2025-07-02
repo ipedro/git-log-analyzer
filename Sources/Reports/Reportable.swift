@@ -1,7 +1,7 @@
 import Foundation
 import Git
 
-protocol Reportable {
+public protocol Reportable {
     init(directory: URL,
          items: [URL: [GitLogEntry]],
          includeRules: [String],

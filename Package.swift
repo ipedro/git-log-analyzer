@@ -11,16 +11,6 @@ let package = Package(
         .executable(
             name: "git-log-analyzer",
             targets: ["GitLogAnalyzer"]
-        ),
-        .library(
-            name: "Git",
-            targets: ["Git"]
-        ),
-        .library(
-            name: "FileIndexer",
-            targets: [
-                "FileIndexer"
-            ]
         )
     ],
     dependencies: [
@@ -31,14 +21,17 @@ let package = Package(
         .executableTarget(
             name: "GitLogAnalyzer",
             dependencies: [
-                "Git",
                 "FileIndexer",
+                "Reports",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "SwiftToolsSupport", package: "swift-tools-support-core")
             ]
         ),
-        .target(name: "Git"),
         .target(name: "FileIndexer"),
+        .target(
+            name: "Reports",
+            dependencies: ["Git"]
+        ),
         .testTarget(name: "GitTests"),
         .testTarget(name: "FileIndexerTests"),
     ]

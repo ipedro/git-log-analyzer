@@ -2,6 +2,7 @@ import ArgumentParser
 import FileIndexer
 import Foundation
 import Git
+import Reports
 import TSCBasic
 
 @main
