@@ -11,7 +11,7 @@ let package = Package(
         .executable(
             name: "git-log-analyzer",
             targets: ["GitLogAnalyzer"]
-        )
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-tools-support-core", from: "0.7.3"),
@@ -23,14 +23,23 @@ let package = Package(
             dependencies: [
                 "FileIndexer",
                 "Reports",
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "SwiftToolsSupport", package: "swift-tools-support-core")
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),
-        .target(name: "FileIndexer"),
+        .target(
+            name: "FileIndexer"
+        ),
         .target(
             name: "Reports",
-            dependencies: ["Git"]
+            dependencies: [
+                "Git"
+            ]
+        ),
+        .target(
+            name: "Git",
+            dependencies: [
+                .product(name: "SwiftToolsSupport", package: "swift-tools-support-core"),
+            ]
         ),
         .testTarget(name: "GitTests"),
         .testTarget(name: "FileIndexerTests"),

@@ -13,7 +13,7 @@ public struct GitLogDecoder: Sendable {
 
         for rawEntry in rawEntries {
             do {
-                var logEntry = try decode(rawEntry)
+                let logEntry = try decode(rawEntry)
                 logs.append(logEntry)
             } catch {
                 print(error, rawEntry, separator: "\n")
