@@ -1,13 +1,13 @@
 import Foundation
-@_implementationOnly import TSCBasic
+import TSCBasic
 
-public struct GitLog {
+public struct GitLog: Sendable {
     private let git = Git()
-    public var format: GitLogFormat
-    public var maxCount: Int?
-    public var before: String?
-    public var after: String?
-    
+    public let format: GitLogFormat
+    public let maxCount: Int?
+    public let before: String?
+    public let after: String?
+
     private let decoder = GitLogDecoder {
         $0.dateDecodingStrategy = .iso8601
     }

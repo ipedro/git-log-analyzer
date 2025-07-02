@@ -36,7 +36,7 @@ public struct FileIndexer {
             return []
         }
 
-        let urls = isDirectory.boolValue ? enumerateDirectory() : [directory]
+        let urls = isDirectory.boolValue ? try enumerateDirectory() : [directory]
         return validate(urls: urls, regExes: regExes)
     }
 
@@ -58,22 +58,27 @@ public struct FileIndexer {
         return validURLs
     }
 
-    private func enumerateDirectory() -> [URL] {
-        fileManager
-            .enumerator(
-                at: directory,
-                includingPropertiesForKeys: [
-                    .isRegularFileKey,
-                ],
-                options: [
-                    .skipsHiddenFiles,
-                    .skipsPackageDescendants,
-                    .producesRelativePathURLs,
-                ],
-                errorHandler: errorHandler
-            )?
-            .compactMap { $0 as? URL }
-            ?? []
+    enum FileIndexerError: Error {
+        case cannotEnumerateDirectory
+    }
+
+    private func enumerateDirectory() throws -> [URL] {
+        guard let enumerator = fileManager.enumerator(
+            at: directory,
+            includingPropertiesForKeys: [
+                .isRegularFileKey,
+            ],
+            options: [
+                .skipsHiddenFiles,
+                .skipsPackageDescendants,
+                .producesRelativePathURLs,
+            ],
+            errorHandler: errorHandler
+        ) else {
+            throw FileIndexerError.cannotEnumerateDirectory
+        }
+
+        return enumerator.compactMap { $0 as? URL }
     }
 
     private func isIncluded(_ url: URL, regExes: [NSRegularExpression]) -> Bool {

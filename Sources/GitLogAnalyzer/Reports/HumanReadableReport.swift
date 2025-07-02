@@ -1,5 +1,5 @@
 import Foundation
-import GitLibrary
+import Git
 
 struct OnelineTextReport: Reportable {
     private var _report: HumanReadableReport

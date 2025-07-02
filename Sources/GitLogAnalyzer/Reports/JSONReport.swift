@@ -1,5 +1,5 @@
 import Foundation
-import GitLibrary
+import Git
 
 struct JSONReport: Reportable, Codable {
     private struct Item: Codable {

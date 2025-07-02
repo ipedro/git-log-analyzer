@@ -1,18 +1,18 @@
 import Foundation
-@_implementationOnly import TSCBasic
-@_implementationOnly import TSCUtility
+import TSCBasic
+@preconcurrency import TSCUtility
 
-public struct Git: Hashable {
+struct Git: Hashable, Sendable {
     private var tool: String = TSCUtility.Git.tool
-    private var environment: [String: String] = TSCUtility.Git.environment
+    private var environment = TSCUtility.Git.environmentBlock
 
-    public func run(_ args: [String], url: Foundation.URL) throws -> String {
-        let path = AbsolutePath(url.path)
+    func run(_ args: [String], url: Foundation.URL) throws -> String {
+        let path = try AbsolutePath(validating: url.path)
         return try execute(["-C", path.dirname] + args)
     }
 
     private func execute(_ arguments: [String]) throws -> String {
-        let process = Process(arguments: [tool] + arguments, environment: environment)
+        let process = Process(arguments: [tool] + arguments, environmentBlock: environment)
         try process.launch()
         let result = try process.waitUntilExit()
 

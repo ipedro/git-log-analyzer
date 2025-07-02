@@ -1,5 +1,5 @@
 import Foundation
-import GitLibrary
+import Git
 import TSCBasic
 
 struct SquadOwnershipReport: Reportable {
@@ -7,37 +7,6 @@ struct SquadOwnershipReport: Reportable {
     let items: [URL: [GitLogEntry]]
     let includedFiles: [String]
     let maxCommitsPerFile: Int?
-    
-    let squadNormalization: [String: String] = [
-        "CCS":      "AGNTX",
-        "CHK":      "ORGANIC",
-        "CHURN":    "CS",
-        "CMSUM":    "ORGANIC",
-        "CON":      "ORGANIC",
-        "ET":       "ER",
-        "FINNC":    "FINCC",
-        "GRW":      "ORGANIC",
-        "HFHFMOB":  "HFMOB",
-        "HFMO":     "HFMOB",
-        "HFOMB":    "HFMOB",
-        "HMOB":     "HFMOB",
-        "IMR":      "MREV",
-        "IO":       "HFMOB",
-        "IOS":      "HFMOB",
-        "MNZ":      "MREV",
-        "MOBAD":    "MOBA/MOBD",
-        "MOBDA":    "MOBA/MOBD",
-        "MODBA":    "MOBA/MOBD",
-        "MSS":      "MENUX",
-        "MVW":      "MENUX/DPLAN",
-        "PLAMN":    "DPLAN",
-        "PLANM":    "DPLAN",
-        "PLUS":     "MREV",
-        "RAF":      "REF",
-        "RCP":      "MENUX",
-        "REACT":    "SQDREACT",
-        "SMF":      "DPLAN"
-    ]
     
     init(directory: URL, items: [URL : [GitLogEntry]], includeRules: [String], maxCommitsPerFile: Int?) {
         self.directory = directory
@@ -68,8 +37,7 @@ struct SquadOwnershipReport: Reportable {
             guard let firstGroup = matchGroups.first else { return }
             guard firstGroup.count == 2 else { return }
             let match = firstGroup[1]
-            let teamCode = squadNormalization[match, default: match]
-            countedSet.insert(teamCode)
+            countedSet.insert(match)
         }
         return countedSet
     }
@@ -85,11 +53,6 @@ struct SquadOwnershipReport: Reportable {
 - Directory: \(directory.path)
 - Files Query: \(includedFiles.map { "\"\($0)\"" }.joined(separator: ", "))
 - Files with squad: \(fileOwnership.count) / \(items.count)
-
-## Squad Normalization
-\(squadNormalization.reduce(into: []) { partialResult, element in
-    partialResult.append("- \(element.key) => \(element.value)")
-}.sorted().joined(separator: "\n"))
 
 ## Files
 \(fileOwnership.reduce(into: "") { partialResult, element in
@@ -144,7 +107,7 @@ extension SquadOwnershipReport {
             while index >= .zero {
                 for squadName in squadNames where set.count(of: squadName) == index {
                     let ratio = Float(index) / Float(totalCount)
-                    components.append("\(squadName), \(Self.percentFormatter.string(from: ratio))")
+                    components.append("\(squadName), \(ratio.formatted(.percent))")
                 }
                 index -= 1
             }

@@ -1,5 +1,5 @@
 import Foundation
-import GitLibrary
+import Git
 
 protocol Reportable {
     init(directory: URL,

@@ -1,15 +1,27 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 6.0
 
 import PackageDescription
 
 let package = Package(
-    name: "GitLogAnalyser",
-    platforms: [.macOS(.v12)],
+    name: "GitLogAnalyzer",
+    platforms: [
+        .macOS(.v12)
+    ],
     products: [
         .executable(
-            name: "git-log-analyser",
-            targets: ["GitLogAnalyser"]
+            name: "git-log-analyzer",
+            targets: ["GitLogAnalyzer"]
         ),
+        .library(
+            name: "Git",
+            targets: ["Git"]
+        ),
+        .library(
+            name: "FileIndexer",
+            targets: [
+                "FileIndexer"
+            ]
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-tools-support-core", from: "0.7.3"),
@@ -17,17 +29,17 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "GitLogAnalyser",
+            name: "GitLogAnalyzer",
             dependencies: [
-                "GitLibrary",
-                "FileEnumerationLibrary",
+                "Git",
+                "FileIndexer",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "SwiftToolsSupport", package: "swift-tools-support-core")
             ]
         ),
-        .target(name: "GitLibrary"),
-        .target(name: "FileEnumerationLibrary"),
-        .testTarget(name: "GitLibraryTests"),
-        .testTarget(name: "FileEnumerationLibraryTests"),
+        .target(name: "Git"),
+        .target(name: "FileIndexer"),
+        .testTarget(name: "GitTests"),
+        .testTarget(name: "FileIndexerTests"),
     ]
 )

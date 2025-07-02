@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GitLogEntry: Codable, Hashable {
+public struct GitLogEntry: Codable, Hashable, Sendable {
     public var author: Contributor
     public var body: String?
     public var created: Date
@@ -11,7 +11,7 @@ public struct GitLogEntry: Codable, Hashable {
     public var committer: Contributor
     public var signature: Signature?
     public var subject: Subject
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.author, forKey: .author)
@@ -27,29 +27,29 @@ public struct GitLogEntry: Codable, Hashable {
     }
 }
 
-public struct Subject: Codable, Hashable, CustomStringConvertible {
-    public var description: String
-    public var sanitized: String
+public struct Subject: Codable, Hashable, CustomStringConvertible, Sendable {
+    public let description: String
+    public let sanitized: String
 }
 
-public struct Signature: Codable, Hashable {
-    public var issuer: String
-    public var fingerprint: String
-    public var key: String
-    public var message: String
-    public var trustLevel: String
+public struct Signature: Codable, Hashable, Sendable {
+    public let issuer: String
+    public let fingerprint: String
+    public let key: String
+    public let message: String
+    public let trustLevel: String
 }
 
-public struct Hash: Codable, Hashable, CustomStringConvertible {
-    public var description: String
-    public var abbreviated: String
+public struct Hash: Codable, Hashable, CustomStringConvertible, Sendable {
+    public let description: String
+    public let abbreviated: String
 }
 
 // MARK: - Contributor
 
-public struct Contributor: Codable, Hashable, CustomStringConvertible {
-    public var email: String
-    public var name: String
+public struct Contributor: Codable, Hashable, CustomStringConvertible, Sendable {
+    public let email: String
+    public let name: String
     public var description: String { "\(name) <\(email)>" }
 }
 

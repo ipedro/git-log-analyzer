@@ -1,5 +1,5 @@
 import XCTest
-@testable import GitLibrary
+@testable import Git
 
 final class GitLogTests: XCTestCase {
     func test_follow_success() throws {
@@ -17,12 +17,12 @@ final class GitLogTests: XCTestCase {
         XCTAssertEqual(initialCommit.committer.email, "noreply@github.com")
         XCTAssertEqual(initialCommit.committer.name, "GitHub")
         XCTAssertEqual(initialCommit.committer.description, "GitHub <noreply@github.com>")
-        XCTAssertEqual(initialCommit.body, "* MOBD-2210: Create FileEnumerationLibrary\r\n\r\n* MOBD-2210: Add GitLibrary\r\n\r\nI\'m a body message ;-)\r\n\r\n* Add GitLog test")
+        XCTAssertEqual(initialCommit.body, "* MOBD-2210: Create FileIndexer\r\n\r\n* MOBD-2210: Add Git\r\n\r\nI\'m a body message ;-)\r\n\r\n* Add GitLog test")
         XCTAssertEqual(initialCommit.created.timeIntervalSinceReferenceDate, 687451480)
         XCTAssertNil(initialCommit.notes)
         XCTAssertEqual(initialCommit.parent, "990e3a8a1721b93bd73cfbd1c1b85c5fc519de8d")
         XCTAssertEqual(initialCommit.published.timeIntervalSinceReferenceDate, 687451480)
         XCTAssertNil(initialCommit.signature)
-        XCTAssertEqual(initialCommit.subject.description, "MOBD-2210: Add GitLibrary 1/2 (#286)")
+        XCTAssertEqual(initialCommit.subject.description, "MOBD-2210: Add Git 1/2 (#286)")
     }
 }

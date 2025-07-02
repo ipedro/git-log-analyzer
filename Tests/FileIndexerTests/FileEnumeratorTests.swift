@@ -1,5 +1,5 @@
 import XCTest
-@testable import FileEnumerationLibrary
+@testable import FileIndexer
 
 final class FileEnumeratorTests: XCTestCase {
     let testDirectory = URL(fileURLWithPath: #file)

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GitLogFormat: Hashable, ExpressibleByStringLiteral, CustomStringConvertible {
+public struct GitLogFormat: Hashable, ExpressibleByStringLiteral, CustomStringConvertible, Sendable {
     public let quoteSymbol: Character = "⍺"
     public let eofSymbol: Character = "☑️"
     public var sanitizePattern: String { "(?<=: \(quoteSymbol))[^\(quoteSymbol)]*" }

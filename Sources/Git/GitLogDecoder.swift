@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GitLogDecoder {
+public struct GitLogDecoder: Sendable {
     let decoder: JSONDecoder
 
     public init(decoderConfigurationHandler: (JSONDecoder) -> Void) {
